@@ -56,7 +56,7 @@ Ben Lilburne <bnej@mac.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2009 Ben Lilburne
+Copyright (C) 2009-2025 Ben Lilburne
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
