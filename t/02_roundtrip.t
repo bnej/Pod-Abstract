@@ -16,7 +16,7 @@ bin/paf
 local $/ = undef;
 
 foreach my $file (@try_files) {
-    open IN, "<lib/Pod/Abstract.pm";
+    open IN, "<", $file;
     my $pa_text = <IN>;
     my $pa = Pod::Abstract->load_string($pa_text);
 

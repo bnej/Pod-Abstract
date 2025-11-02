@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 14;
+use Test::More tests => 16;
 use Pod::Abstract;
 use Pod::Abstract::BuildNode qw(node nodes);
 
@@ -57,6 +57,9 @@ my @intersect_select =
 my @tt = $root->select('//head2[@heading eq ^/head1@heading]');
 my @h2_para = $root->select('/head1(0)/:paragraph head2');
 
+# Negative index into headings
+my @neg_hdg = $root->select('/head1(-1)');
+
 ok(@cs == 1, "Case sensitive match 1");
 ok(@ci == 3, "Case insensitive match 3");
 ok(@eq == 1, "Exact match 1");
@@ -76,6 +79,9 @@ ok(@intersect == 2, "Intersect match two nodes");
 
 ok(@union_select == 3, "Union in select match three nodes");
 ok(@intersect_select == 1, "Intersect in select matches one node only");
+
+ok(@neg_hdg == 1, "Negative index matched one node");
+ok($neg_hdg[0]->param('heading')->pod eq 'Test', "Last head1 is 'Test'");
 
 1;
 

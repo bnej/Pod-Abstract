@@ -275,7 +275,7 @@ sub lex {
         } elsif($expression =~ m/^\@([a-zA-Z0-9]+)/) {
             push @l, [ ATTR, $1 ];
             substr($expression, 0, length( $1 ) + 1) = '';
-        } elsif($expression =~ m/^\(([0-9]+)\)/) {
+        } elsif($expression =~ m/^\((\-?[0-9]+)\)/) {
             push @l, [ INDEX, $1 ];
             substr($expression, 0, length( $1 ) + 2) = '';
         } elsif($expression =~ m/^\{(([^\}]|\\\})+)\}([i]?)/) {
@@ -466,7 +466,7 @@ sub select_index {
         } else { # Index < 0
             my $neg = abs $index;
             if($neg <= scalar @$ilist) {
-                return $ilist->[-$neg];
+                return [ $ilist->[-$neg] ];
             } else {
                 return [ ]; # Out of bounds
             }
