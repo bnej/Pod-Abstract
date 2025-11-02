@@ -2,19 +2,28 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 19;
 use Pod::Abstract;
 use Pod::Abstract::BuildNode qw(node nodes);
 
 my @h = ( );
 my @h2 = ( );
+
+my $count_1 = 1;
+
 foreach my $t (qw(test TEST foo foo Test)) {
     my $h1 = node->head1($t);
     push @h, $h1;
     $h1->push(node->paragraph("test"));
     foreach my $t (qw(TEST biscuit test cheese)) {
-        $h1->push(node->head2($t));
+        if( $t eq 'cheese' ) {
+            $h1->push(node->head2("$t-$count_1"));
+        } else {
+            $h1->push(node->head2($t));
+        }
     }
+
+    $count_1 ++;
 }
 my $root = node->root;
 $root->nest(@h);
@@ -75,6 +84,12 @@ ok(@root == 1, "One root node only");
 ok(@tt == 10, "Match 10 head2 nodes");
 ok(@h2_para == 5, "Match 5 head2 or para under first head1");
 ok(@union == 3, "Union match three nodes");
+
+for ( my $i = 1; $i < 4; $i++ ) {
+    my $n = $union[$i - 1]; # Out by one.
+    ok( $n->pod =~ m/cheese-$i/, "Matched the expected node =head2 cheese-$i in the unioned head1 sections" );
+}
+
 ok(@intersect == 2, "Intersect match two nodes");
 
 ok(@union_select == 3, "Union in select match three nodes");
