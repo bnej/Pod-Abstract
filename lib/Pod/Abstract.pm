@@ -7,7 +7,7 @@ use Pod::Abstract::Path;
 use Pod::Abstract::Parser;
 use IO::String;
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 =head1 NAME
 
@@ -251,7 +251,7 @@ sub load_string {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

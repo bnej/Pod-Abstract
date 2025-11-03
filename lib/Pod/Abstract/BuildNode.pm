@@ -7,7 +7,7 @@ use Pod::Abstract::Parser;
 use Pod::Abstract::Node;
 use base qw(Exporter);
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 our @EXPORT_OK = qw(node nodes);
 
@@ -414,7 +414,7 @@ sub cut {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

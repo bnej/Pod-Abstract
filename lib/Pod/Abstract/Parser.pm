@@ -6,7 +6,7 @@ use Pod::Abstract::Node;
 use Data::Dumper;
 use base qw(Pod::Parser);
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 =head1 NAME
 
@@ -293,7 +293,7 @@ sub end_pod {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

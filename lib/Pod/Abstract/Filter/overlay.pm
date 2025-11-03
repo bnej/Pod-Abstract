@@ -6,7 +6,7 @@ use base qw(Pod::Abstract::Filter);
 use Pod::Abstract;
 use Pod::Abstract::BuildNode qw(node);
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 =head1 NAME
 
@@ -151,7 +151,7 @@ sub filter {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

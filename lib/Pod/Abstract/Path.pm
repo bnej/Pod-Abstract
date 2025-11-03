@@ -8,7 +8,7 @@ use Pod::Abstract::BuildNode qw(node);
 
 $Data::Dumper::Indent = 1;
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 use constant CHILDREN   => 1;  # /
 use constant ALL        => 2;  # //
@@ -891,7 +891,7 @@ sub parse_expression {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

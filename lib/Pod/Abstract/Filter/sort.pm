@@ -38,7 +38,7 @@ sorted alphabetically, you don't need to specify a section.
 
 =cut
 
-our $VERSION = '0.20';
+our $VERSION = '0.26';
 
 sub filter {
     my $self = shift;
@@ -74,7 +74,7 @@ sub filter {
 
 =head1 AUTHOR
 
-Ben Lilburne <bnej@mac.com>
+Ben Lilburne <bnej80@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 

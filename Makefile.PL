@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'Pod::Abstract',
-    AUTHOR              => 'Ben Lilburne <bnej@mac.com>',
+    AUTHOR              => 'Ben Lilburne <bnej80@gmail.com>',
     VERSION_FROM        => 'lib/Pod/Abstract.pm',
     ABSTRACT_FROM       => 'lib/Pod/Abstract.pm',
     EXE_FILES           => [ 'bin/paf' ],
