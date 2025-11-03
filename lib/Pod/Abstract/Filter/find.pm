@@ -9,8 +9,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::find - paf command to find specific nodes that
-contain a string.
+Pod::Abstract::Filter::find - Find specific nodes that contain a
+string.
 
 =head1 DESCRIPTION
 

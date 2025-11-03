@@ -9,8 +9,7 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::uncut - paf command to turn source code into
-verbatim nodes.
+Pod::Abstract::Filter::uncut - Turn source code into verbatim nodes.
 
 =head1 DESCRIPTION
 

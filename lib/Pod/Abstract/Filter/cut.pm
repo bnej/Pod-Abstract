@@ -8,8 +8,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::cut - paf command to remove non-processed (cut)
-portions of a Pod document.
+Pod::Abstract::Filter::cut - Remove non-processed (cut) portions of a
+Pod document.
 
 =cut
 

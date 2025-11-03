@@ -7,8 +7,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::clear_podcmds - paf command to remove =pod commands
-from the begining of Pod blocks.
+Pod::Abstract::Filter::clear_podcmds - Remove =pod commands from the
+begining of Pod blocks.
 
 =cut
 

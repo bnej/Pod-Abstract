@@ -8,8 +8,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::unoverlay - paf command to remove "overlay" blocks
-from a Pod document, as created by the paf overlay command.
+Pod::Abstract::Filter::unoverlay - Remove "overlay" blocks from a Pod
+document, as created by the paf overlay command.
 
 =begin :overlay
 

@@ -8,8 +8,8 @@ use base qw(Pod::Abstract::Filter);
 
 =head1 NAME
 
-Pod::Abstract::Filter::sort - paf command to alphabetically sort
-sub-sections within a Pod section
+Pod::Abstract::Filter::sort - alphabetically sort sub-sections within a
+POD section.
 
 =head1 USAGE
 

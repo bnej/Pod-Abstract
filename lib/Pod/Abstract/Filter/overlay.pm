@@ -10,8 +10,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::overlay - paf command to perform a method
-documentation overlay on a Pod document.
+Pod::Abstract::Filter::overlay - Perform a method documentation overlay
+on a Pod document.
 
 =head1 USAGE
 

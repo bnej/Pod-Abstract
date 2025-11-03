@@ -8,8 +8,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::summary - paf command to show document outline,
-with short examples.
+Pod::Abstract::Filter::summary - Show document outline, with short
+examples.
 
 =cut
 

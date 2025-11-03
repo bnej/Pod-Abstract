@@ -8,8 +8,8 @@ our $VERSION = '0.26';
 
 =head1 NAME
 
-Pod::Abstract::Filter::add_podcmds - paf command to insert explict =pod
-commands before each Pod block in a document.
+Pod::Abstract::Filter::add_podcmds - Insert explict =pod commands
+before each Pod block in a document.
 
 =head1 METHODS
 
