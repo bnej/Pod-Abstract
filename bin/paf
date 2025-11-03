@@ -169,7 +169,7 @@ sub main {
             $filter = $full_class;
             @require_params = $filter->require_params;
         } else {
-            die "Unknown command '$arg'\n"
+            die "Unknown command '$arg' - run 'paf' with no arguments for list\n"
         }
     }
     
