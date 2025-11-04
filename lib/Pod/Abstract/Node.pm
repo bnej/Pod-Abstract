@@ -366,9 +366,9 @@ and return a hashref containing C<text>, C<document> and C<section>.
 sub link_info {
     my $self = shift;
     my $t = $self->text;
-    $t =~ m/^(([^\|]*)\|)?([^\/]*)\/?(.*)$/;
+    $t =~ m/^(?:([^\|]*)\|)?([^\/]*)\/?(.*)$/;
 
-    my ($text,$doc,$section) = ($2,$3,$4);
+    my ($text,$doc,$section) = ($1,$2,$3);
     if($doc && $doc =~ m/^.+\:$/) {
         my $url = "$doc/$section";
         return {
@@ -380,7 +380,7 @@ sub link_info {
         return {
             text => $text || $doc || $section,
             link_text => $text,
-            document => $doc,
+            document => $doc || $text,
             section => $section,
         };
     }

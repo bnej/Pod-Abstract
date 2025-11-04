@@ -25,3 +25,5 @@ README
 t/01_compile.t
 t/02_roundtrip.t
 t/03_buildnode.t
+t/04_matchnodes.t
+t/05_pod_detailed.t

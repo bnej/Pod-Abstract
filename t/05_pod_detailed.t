@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 3;
 use Pod::Abstract;
 
 my $pod = q{{;
@@ -69,6 +69,8 @@ L<perlsyn/"For Loops"> is a quoted section name.
 
 L<Pod Abstract is Great|Pod::Abstract> has link text.
 
+L<Test Hyperlink|https://metacpan.org/>
+
 =cut
 }};
 
@@ -76,13 +78,40 @@ my $pa = Pod::Abstract->load_string($pod);
 
 ok($pa, "Sample POD parsed");
 
-my @links = $pa->select('//:L');
-ok(@links == 5, "Found 5 links in the document");
+subtest 'Document Links' => sub {
+    my @links = $pa->select('//:L');
+    ok(@links == 6, "Found 5 links in the document");
 
-my @list_numbered = $pa->select("//head2/over//over/item");
-ok(@list_numbered == 2, "Found 2 nested list items");
+    my $li = $links[0]->link_info;
+    is( $li->{text}, 'perlfunc', 'Perlfunc link had expected text' );
+    is( $li->{section}, 'wantarray', 'And linked to "wantarray"' );
 
+    $li = $links[1]->link_info;
+    is( $li->{text}, 'Pod::Abstract', 'Module link is Pod::Abstract' );
+    is( $li->{document}, 'Pod::Abstract', 'Document is same');
+    ok( !$li->{section}, 'Section is not defined');
 
-done_testing;
+    $li = $links[2]->link_info;
+    is( $li->{text}, 'Pod::Abstract', 'Module link is Pod::Abstract' );
+    is( $li->{document}, 'Pod::Abstract', 'Document is same');
+    is( $li->{section}, 'load_string', 'Section is load_string');
+
+    $li = $links[3]->link_info;
+    is( $li->{text}, 'perlsyn', 'Link text is perlsyn');
+    is( $li->{section}, '"For Loops"', 'Section is "For Loops"');
+
+    $li = $links[4]->link_info;
+    is( $li->{text}, "Pod Abstract is Great", 'Link text is "Pod Abstract is Great"');
+    is( $li->{document}, "Pod::Abstract", 'Document is Pod::Abstract');
+
+    $li = $links[5]->link_info;
+    is( $li->{text}, 'Test Hyperlink', 'Link text is "Test Hyperlink"' );
+    is( $li->{url}, 'https://metacpan.org/', 'Link to metacpan' );
+};
+
+subtest 'List Items' => sub {
+    my @list_numbered = $pa->select("//head2/over//over/item");
+    ok(@list_numbered == 2, "Found 2 nested list items");
+};
 
 1;
