@@ -765,6 +765,7 @@ sub parse_l_path {
             'next' => $self->parse_l_path($l),
         };
     } elsif($tok == NAME) {
+        $self->check_name($val); # Dies on fail.
         my @extra_names = $self->parse_names($l);
         return {
             'action' => 'select_name',
@@ -802,10 +803,63 @@ sub parse_names {
     while(@$l && $l->[0][0] == NAME) {
         my $next = shift @$l;
         my $val = $next->[1];
+
+        return unless $self->check_name($val); # This is going to produce a die, unless told not to.
+
         push @r, $val;
     }
 
     return @r;
+}
+
+my %allow = (
+    head1 => 1,
+    head2 => 1,
+    head3 => 1,
+    head4 => 1, 
+    head5 => 1,
+    head6 => 1,
+    pod => 1,
+    over => 1,
+    item => 1,
+    back => 1,
+    begin => 1,
+    for => 1,
+    end => 1,
+    '#cut' => 1,
+    ':verbatim' => 1,
+    ':text' => 1,
+    ':paragraph' => 1,
+
+    # Formatting commands
+    ':L' => 1, # Link
+    ':X' => 1, # Index
+    ':B' => 1, # Bold
+    ':C' => 1, # Code
+    ':E' => 1, # Escape
+    ':I' => 1, # Italic
+    ':F' => 1, # Filename
+    ':Z' => 1, # Zero
+    ':S' => 1, # Non-breaking spaces
+);
+
+sub check_name {
+    my $self = shift;
+    my $val = shift;
+
+    if( $allow{$val} ) {
+        return 1;
+    }
+
+    if( $val =~ m/^[A-Z]$/ ) {
+        die "Expression name $val looks like a formatting code, did you mean :$val?\n";
+    }
+
+    if( $allow{":$val"} ) {
+        die "Expression $val invalid, did you mean :$val?\n";
+    }
+
+    die "Invalid node expression $val\n";
 }
 
 sub parse_expression {
