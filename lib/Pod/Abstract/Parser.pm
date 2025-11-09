@@ -160,9 +160,23 @@ sub command {
             $self->load_pt($attr_node, $pt);
             $attr{$attr_name} = $attr_node;
             $attr{body_attr} = $attr_name;
-        } elsif($paragraph =~ m/^\:/) {
+        } elsif($command =~ m/^(begin|for)$/ && $paragraph =~ m/^\:/) {
+            # In the case of begin/for, the format name is the first word and if
+            # it begins with : then the internal POD should be parsed.
             $attr{parse_me} = 1;
         }
+
+        my $for_para = undef;
+        if($command eq 'for') {
+            # Special case for =for - POD rules are nonsense, so the first
+            # *word* is the formatter (we will treat as body), and the
+            # following words are either a child text, or possibly interior
+            # sequences that need to be parsed.
+            my ($formatter, $rest) = split /\s/,$paragraph,2;
+            $paragraph = $formatter;
+            $for_para = $rest;
+        }
+
         
         my $element_node = Pod::Abstract::Node->new(
             type => $command,
@@ -170,6 +184,22 @@ sub command {
             p_break => $p_break,
             %attr,
             );
+
+        if( $command eq 'for' && $for_para ) {
+            # Special handling for =for - the "paragraph" has been split from
+            # the formatter, and may or may not need parsing.
+            if( $attr{parse_me} ) {
+                my $pt = $self->parse_text($for_para);
+                $self->load_pt($element_node, $pt);
+            } else {
+                my $t_node = Pod::Abstract::Node->new(
+                    type => ':text',
+                    body => $for_para,
+                    );
+                $element_node->push($t_node);
+            }
+        }
+
         if($pull) {
             $pull->param('close_element', $element_node);
         } else {

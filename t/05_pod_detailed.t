@@ -133,8 +133,6 @@ subtest 'Document Links' => sub {
 };
 
 subtest 'begin/end and custom nodes' => sub {
-    diag $pa->ptree;
-
     # =begin/=end
     my ($hdg) =  $pa->select(q{/head1[@heading eq 'FUNCTIONS']/head2[@heading eq 'begin/end']});
     my @special = $hdg->select(qq{/begin[. eq ':special']});
@@ -155,9 +153,22 @@ subtest 'begin/end and custom nodes' => sub {
     is( $m_inner[0]->type, ':text', "Inner node is a text node" );
 
     # =for
-    my @for = $hdg->select(qq{/for});
+    my @for = $hdg->select(q{/for});
     ok( @for == 2, "Two :fors");
-    diag $_->body foreach @for;
+
+    my @for_ex = $hdg->select(q{/for[. eq 'example']});
+    ok( @for_ex == 1, "One =for example" );
+
+    my @fenodes = $for_ex[0]->select("//");
+    ok( @fenodes == 1 && $fenodes[0]->type eq ':text', "And it's just one text node - not parsed");
+
+    my @for_ex2 = $hdg->select(q{/for[. eq ':example']});
+    ok( @for_ex2 == 1, "One =for :example" );
+    
+    my @fenodes2 = $for_ex2[0]->select("//");
+    ok( @fenodes2 == 4, "Four nodes, looks parsed" );
+    ok( (grep {$_->type eq ':B'} @fenodes2), "Found the bold text" );
+
 };
 
 subtest 'List Items' => sub {
