@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Pod::Abstract;
 
 my $pod = q{{;
@@ -57,6 +57,29 @@ sub sample_call {
     # Do some code. This is a "cut" node.
 }
 
+=head2 begin/end
+
+=begin markdown
+
+* I wouldn't expect this to be parsed internally by Pod::Abstract.
+* This would instead be a single text node - POD sequences like C<this>
+  are just normal text.
+
+=end
+
+=begin :special
+
+These I<should> be parsed.
+
+It's a special trait of POD that : at the begining of a POD block is
+meant to have its internals parsed as POD.
+
+=end
+
+=for example this would not be parsed.
+
+=for :example but B<this> would.
+
 =head1 SEE ALSO
 
 L<perlfunc/wantarray> is a link to a function inside a standard document.
@@ -107,6 +130,34 @@ subtest 'Document Links' => sub {
     $li = $links[5]->link_info;
     is( $li->{text}, 'Test Hyperlink', 'Link text is "Test Hyperlink"' );
     is( $li->{url}, 'https://metacpan.org/', 'Link to metacpan' );
+};
+
+subtest 'begin/end and custom nodes' => sub {
+    diag $pa->ptree;
+
+    # =begin/=end
+    my ($hdg) =  $pa->select(q{/head1[@heading eq 'FUNCTIONS']/head2[@heading eq 'begin/end']});
+    my @special = $hdg->select(qq{/begin[. eq ':special']});
+    ok( @special == 1, "Found 1 ':special'");
+
+    # : means the inner parts should be parsed - there should be 7
+    # nodes in there if we flatten them out
+    my @s_inner = $special[0]->select('//'); # All nodes.
+    ok( @s_inner == 7, "7 inner nodes in the :special node");
+    ok( (grep { $_->type eq ':I' } @s_inner), "Found the italic node");
+
+    my @markdown = $hdg->select(qq{/begin[. eq 'markdown']});
+    ok( @markdown == 1, "Found 1 'markdown'");
+
+    # This shouldn't be parsed, it should be only one text node.
+    my @m_inner = $markdown[0]->select('//');
+    ok( @m_inner == 1, "Only one inner node");
+    is( $m_inner[0]->type, ':text', "Inner node is a text node" );
+
+    # =for
+    my @for = $hdg->select(qq{/for});
+    ok( @for == 2, "Two :fors");
+    diag $_->body foreach @for;
 };
 
 subtest 'List Items' => sub {

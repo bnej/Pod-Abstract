@@ -324,6 +324,9 @@ sub type {
 Get or set the node body text. This is NOT the child tree of the node,
 it is the literal text as used by text/verbatim nodes.
 
+For a "begin" or "for" block, it is the text following the begin or for
+label. The children of the node are the contained text/nodes.
+
 =cut
 
 sub body {
