@@ -2,10 +2,10 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Pod::Abstract;
 
-my $pod = q{{;
+my $pod = q~
 =head1 NAME
 
 Example - Example POD document.
@@ -95,7 +95,8 @@ L<Pod Abstract is Great|Pod::Abstract> has link text.
 L<Test Hyperlink|https://metacpan.org/>
 
 =cut
-}};
+
+~;
 
 my $pa = Pod::Abstract->load_string($pod);
 
@@ -174,6 +175,10 @@ subtest 'begin/end and custom nodes' => sub {
 subtest 'List Items' => sub {
     my @list_numbered = $pa->select("//head2/over//over/item");
     ok(@list_numbered == 2, "Found 2 nested list items");
+};
+
+subtest 'Round Trip' => sub {
+    is($pod, $pa->pod, "Document round-trip with no changes");
 };
 
 1;

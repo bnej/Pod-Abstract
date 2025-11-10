@@ -228,11 +228,19 @@ sub pod {
         $r .= "$cmd$l_delim";
     } elsif( $type eq '[ROOT]' or $type =~ m/^@/) {
         # ignore
+    } elsif( $type eq 'for' ) {
+        # Special case for "for" command, because we pulled the formatter/text
+        # into body/children
+        my $text = "";
+        $text .= $_->pod foreach $self->children;
+        $r .= "=$type $body $text$p_break";
+        return $r;
     } else { # command
         my $body_attr = $self->param('body_attr');
         if($body_attr) {
             $body = $self->param($body_attr)->pod;
         }
+
         if(defined $body && $body ne '') {
             $r .= "=$type $body$p_break";
         } else {

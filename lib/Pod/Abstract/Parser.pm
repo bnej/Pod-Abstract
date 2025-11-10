@@ -107,7 +107,7 @@ sub command {
         # Treat as non-pod - i.e, verbatim program text block.
         my $element_node = Pod::Abstract::Node->new(
             type => "#cut",
-            body => "=$command $paragraph$p_break",
+            body => ($paragraph ? "=$command $paragraph$p_break" : "=$command$p_break"),
             );
         my $top = $cmd_stack->[$#$cmd_stack];
         $top->push($element_node);
@@ -268,7 +268,6 @@ sub textblock {
         type => ':paragraph',
         p_break => $p_break,
         );
-    $paragraph =~ s/[\s\n\r]+/ /g;
     my $pt = $self->parse_text($paragraph);
     $self->load_pt($element_node, $pt);
 
