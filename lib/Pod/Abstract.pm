@@ -181,6 +181,43 @@ Where C<$pod> is a text with POD formatting.
 
 =back
 
+=head2 Using paths
+
+The easiest way to traverse a C<$pa> tree is to use the C<select> method on the
+nodes, and paths.
+
+C<select> will accept and expression and return an array of
+L<Pod::Abstract::Node>. These nodes also support the select method - for example:
+
+ my @headings = $pa->select('/head1'); # Get all heading 1
+ my @X = $headings[0]->select('//:X'); # Get all X (index) sequences inside that heading
+ my @indices = map { $_->text } @X; # Map out the contents of those as plain text.
+
+You can combine path expressions with other methods, for example - C<children>
+will give all the child nodes of a POD node, C<next>, C<previous>, C<parent> and
+C<root> allow traversal from a given node.
+
+From any node you can then call C<select> to make a declarative traversal from
+there. The above methods also have comparable expressions in
+L<Pod::Abstract::Path>.
+
+=head2 Traversing for document generation
+
+To traverse the tree for document generation, you can follow C<children> from
+the first node, then examine each node type to determine what you should
+generate.
+
+The nodes will generate in a tree, so headings have nested children with
+subheadings and texts. In most cases the C<body> method will give the text (or
+POD nodes) next to the command, while the C<children> method will give the
+contained POD.
+
+Special types are C<:paragraph>, C<:text>, <#cut>. Interior sequences are also
+started with a : for their type, like C<:L>, C<:B>, C<:I> for Link, Bold,
+Italic.
+
+Use the C<< $node->ptree >> method to see a visualised tree of a parsed document.
+
 =head1 METHODS
 
 =cut
