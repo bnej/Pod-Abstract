@@ -27,7 +27,11 @@ provided.
  Pod::Abstract::Parser->new( $pod_abstract );
 
 Requires a Pod::Abstract object to load Pod data into. Should only be
-called internally by Pod::Abstract.
+called internally by L<Pod::Abstract>.
+
+This is a subclass of L<Pod::Parser> and uses that class to handle all basic Pod
+parsing, but implements the additional rules from L<perlpodspec> that require
+more context.
 
 =cut
 
@@ -80,7 +84,8 @@ my %section_commands = (
     'begin' => [ '<end' ],
     );
 
-# Don't parse anything inside these.
+# Don't parse anything inside these. But there are some special cases where you
+# might need to - see "parse_me"
 my %no_parse = (
     'begin' => 1,
     'for' => 1,
@@ -215,6 +220,40 @@ sub command {
     $self->{cmd_stack} = $cmd_stack;
 }
 
+=head2 verbatim
+
+In general, a verbatim node is created as any indented text in a POD block.
+However, there's a special case which is that -
+
+=over
+
+=item *
+
+If we are in a "begin/end" block, that's by default not parsed, and this should
+be text, not verbatim.
+
+=item *
+
+B<But> if we are in a parsed begin/end block (C<parse_me>) it should still be a
+verbatim node.
+
+=back
+
+The behaviour here is very much a DWIM - if you're in a non-parsed block this
+will interpret it correctly even though C<Pod::Parser> will tell you it's a
+verbatim. If you're in a parsed block it will be a C<:text>.
+
+ This would be verbatim.
+
+ =begin example
+
+ But if this command was at the start of the line, this would be non-parsed
+ and would instead be a text node.
+
+ =end
+
+=cut
+
 sub verbatim {
     my ($self, $paragraph, $line_num) = @_;
     
@@ -246,6 +285,19 @@ sub preprocess_paragraph {
     my $top = $cmd_stack->[$#$cmd_stack];
     $top->push($element_node);
 }
+
+=head2 textblock
+
+Textblock handling as C<Pod::Parser> class - we are keeping a command stack
+which lets us know if we should parse the interior sequences of the text block -
+the C<< B<interior sequences> >> style commands. In some cases L<perlpodspec>
+requires them to be ignored, and in some cases they should be parsed.
+
+The C<%no_parse> hash defines commands that generally shouldn't be parsed, but
+the command parser may add a parameter C<parse_me> to the command which will
+cause their text to be parsed as normal POD text.
+
+=cut
 
 sub textblock {
     my ($self, $paragraph, $line_num) = @_;
