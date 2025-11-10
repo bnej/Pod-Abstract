@@ -1,5 +1,9 @@
 Revision history for Pod-Abstract
 
+0.26    10/11/2025
+        Improved tests, fixed issues with POD support for =for commands,
+        improved some error messages for Paths.
+
 0.20    03/01/2010
         Removed usage of UNIVERSAL isa and can as functions, will correct
         a deprecation warning with Perl 5.11. Fixed a bug with
