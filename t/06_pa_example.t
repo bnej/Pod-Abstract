@@ -37,6 +37,8 @@ my $pod = $pa->pod;
 
 ok(index($pod, $expect) >= 0, "Found expected heading summary in generated POD");
 
+# This example is from Pod::Abstract::Node - should do as advertised.
+
 my ($head) = $pa->select('/head1(2)'); # Grab the third head1 from the document (0 based).
 my $heading = $head->param('heading'); # This is the node containing the heading text.
 my $plain_text = $heading->text; # This is the plain text version.
