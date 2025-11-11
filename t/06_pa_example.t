@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More tests => 2;
  
 use Pod::Abstract;
 use Pod::Abstract::BuildNode qw(node);
@@ -36,5 +36,12 @@ my $expect = q{=pod
 my $pod = $pa->pod;
 
 ok(index($pod, $expect) >= 0, "Found expected heading summary in generated POD");
+
+my ($head) = $pa->select('/head1(2)'); # Grab the third head1 from the document (0 based).
+my $heading = $head->param('heading'); # This is the node containing the heading text.
+my $plain_text = $heading->text; # This is the plain text version.
+
+is( $plain_text, 'DESCRIPTION', 'Third heading from example is DESCRIPTION');
+
 
 1;

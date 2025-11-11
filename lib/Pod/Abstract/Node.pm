@@ -350,8 +350,30 @@ sub body {
 
  $node->param( $p_name [, $p_value ] );
 
-Get or set the named parameter. Any value can be used, but for
-document attributes a Pod::Abstract::Node should be set.
+Get or set the named parameter. Any value can be used, but for document
+attributes a C<Pod::Abstract::Node> should be set. There are two common
+parameters which are set that you can use -
+
+=over
+
+=item heading
+
+This is the heading of an =head node, and is a C<Pod::Abstract::Node>.
+
+=item label
+
+This is the label of a list item, like this one.
+
+=back
+
+They are Nodes as these items are defined to have interior sequences, such as
+italic, index entries, etc. If you need a plain text version of a heading or
+label, get it like this:
+
+ my ($head) = $pa->select('/head1(2)'); # Grab the third head1 from the document. (0 based index)
+ my $heading = $head->param('heading'); # This is the node containing the heading text.
+ my $plain_text = $heading->text;       # This is the plain text version.
+
 
 =cut
 
